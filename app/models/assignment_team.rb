@@ -129,16 +129,12 @@ class AssignmentTeam < Team
   # Given a user and assignment, if they aren't already a participant, make them one
   # Since this method is on a team and team already belongs to an assignment, assignment_id is not needed.
   def add_participant(user)
-    existing_participant = AssignmentParticipant.find_by(parent_id: parent_id, user_id: user.id)
-
-    return nil if existing_participant
-
-    # Create the new participant and return it
-    new_participant = AssignmentParticipant.create!(parent_id: parent_id, user_id: user.id) do |participant|
+    AssignmentParticipant.find_or_create_by(
+      parent_id: parent_id, # refers to self.parent_id
+      user_id: user.id
+    ) do |participant|
       participant.permission_granted = user.master_permission_granted
     end
-
-    new_participant  # Explicitly return the newly created participant
   end
 
   def hyperlinks
