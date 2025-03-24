@@ -99,7 +99,7 @@ describe 'AssignmentTeam' do
       it 'adds the user to the team' do
         user = build(:student, id: 10)
         assignment = team.assignment
-        expect(team.add_participant(assignment.id, user)).to be_an_instance_of(AssignmentParticipant)
+        expect(team.add_participant(user)).to be_an_instance_of(AssignmentParticipant)
       end
     end
 
@@ -108,7 +108,7 @@ describe 'AssignmentTeam' do
         allow(team).to receive(:users).with(no_args).and_return([user1])
         allow(AssignmentParticipant).to receive(:find_by).with(user_id: user1.id, parent_id: team.parent_id).and_return(participant1)
         assignment = team.assignment
-        expect(team.add_participant(assignment.id, user1)).to eq(nil)
+        expect(team.add_participant(user1)).to eq(nil)
       end
     end
   end
