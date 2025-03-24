@@ -105,12 +105,19 @@ describe 'AssignmentTeam' do
 
     context 'when a user is already a part of the team' do
       it 'returns without adding user to the team' do
-        allow(team).to receive(:users).with(no_args).and_return([user1])
-        allow(AssignmentParticipant).to receive(:find_by).with(user_id: user1.id, parent_id: team.parent_id).and_return(participant1)
-        assignment = team.assignment
-        expect(team.add_participant(user1)).to eq(nil)
+        # Mock the find_by method to return an existing participant (participant1)
+        allow(AssignmentParticipant).to receive(:find_by)
+                                          .with(user_id: user1.id, parent_id: team.parent_id)
+                                          .and_return(participant1)
+
+        # Call the method to add participant
+        result = team.add_participant(user1)
+
+        # Expect the method to return nil if the user is already a participant
+        expect(result).to eq(nil)
       end
     end
+
   end
 
   describe '#topic_id' do
