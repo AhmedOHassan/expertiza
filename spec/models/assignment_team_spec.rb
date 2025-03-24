@@ -99,21 +99,19 @@ describe 'AssignmentTeam' do
       it 'adds the user to the team' do
         user = build(:student, id: 10)
         assignment = team.assignment
+
         expect(team.add_participant(user)).to be_an_instance_of(AssignmentParticipant)
       end
     end
 
     context 'when a user is already a part of the team' do
       it 'returns without adding user to the team' do
-        # Mock the find_by method to return an existing participant (participant1)
         allow(AssignmentParticipant).to receive(:find_by)
                                           .with(user_id: user1.id, parent_id: team.parent_id)
                                           .and_return(participant1)
 
-        # Call the method to add participant
         result = team.add_participant(user1)
 
-        # Expect the method to return nil if the user is already a participant
         expect(result).to eq(nil)
       end
     end
