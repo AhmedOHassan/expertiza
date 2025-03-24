@@ -133,9 +133,12 @@ class AssignmentTeam < Team
 
     return nil if existing_participant
 
-    AssignmentParticipant.create!(parent_id: parent_id, user_id: user.id) do |participant|
+    # Create the new participant and return it
+    new_participant = AssignmentParticipant.create!(parent_id: parent_id, user_id: user.id) do |participant|
       participant.permission_granted = user.master_permission_granted
     end
+
+    new_participant  # Explicitly return the newly created participant
   end
 
   def hyperlinks
