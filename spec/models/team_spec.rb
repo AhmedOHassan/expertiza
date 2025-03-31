@@ -376,4 +376,16 @@ describe Team do
   #     end
   #   end
   # end
+
+  describe '.find_parent_entity' do
+    it 'returns the parent entity by calling find on the proper constant' do
+      # Stub the constant lookup so that Object.const_get returns Assignment
+      stub_const("AssignmentTeam", Class.new(Team))
+      allow(Assignment).to receive(:find).with(1).and_return(assignment)
+      # Force Team.name to include "Team" so that gsub works.
+      allow(Team).to receive(:name).and_return("AssignmentTeam")
+      expect(Team.find_parent_entity(1)).to eq(assignment)
+    end
+  end
+
 end
